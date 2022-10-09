@@ -11,13 +11,6 @@ public class TipCalculatorRunner
 
         //Initializing
         double price = 0;
-        double totalB4Tip = 0;
-        double totalTip = 0;
-        double indCostB4Tip = 0;
-        double indTip = 0;
-        double totalBillWithTip = 0;
-        double totalCostPerPerson = 0;
-
 
         //Lore: Introducing the User to the Program
         System.out.println("");
@@ -30,50 +23,38 @@ public class TipCalculatorRunner
         int tip = question.nextInt();
         System.out.println("");
 
+        //Creating a new TipCalculator Object Based on the User's Input
+        TipCalculator party = new TipCalculator(partySize, tip);
+        party.getTipPercentage(tip);
+
         //Core of the Program
         while (price != -1)
         {
             System.out.print("Enter the cost of an item in dollars and cents (Type -1 to End): ");
             price = question.nextDouble();
-            totalB4Tip += price;
+            party.addMeal(price);
             System.out.println("");
         }
-        totalB4Tip ++;
+        party.addMeal(1);
+        party.setBillTotal(party.getTotalBillB4Tip());
 
         System.out.println("--------------------------------------------------------");
 
-        //Formatting My Variables for the Final Product
-
-        totalTip =  ((double) tip) / 100 * totalB4Tip;
-        String formattedTotalTip = formatter.format(totalTip);
-
-        indCostB4Tip = totalB4Tip / partySize;
-        String formattedIndCostB4Tip = formatter.format(indCostB4Tip);
-
-        indTip = totalTip / partySize;
-        String formattedIndTip = formatter.format(indTip);
-
-        totalBillWithTip = totalB4Tip + totalTip;
-        String formattedTotalBWT = formatter.format(totalBillWithTip);
-
-        totalCostPerPerson = indCostB4Tip + indTip;
-        String formattedTotalCPP = formatter.format(totalCostPerPerson);
-
-
-
+        //Putting the Decimal Formatter to Use!
+        String formattedTotalTip = formatter.format(party.tipAmount());
+        String formattedTotalBillWithTip = formatter.format(party.totalBill());
+        String formattedPerPersonCostB4Tip = formatter.format(party.perPersonCostB4Tip());
+        String formattedTipPerPerson = formatter.format(party.perPersonTipAmount());
+        String formattedTotalCostPerPerson = formatter.format(party.perPersonTotal());
 
         //Final Product
-        System.out.println("Total Bill Before Tip: " + totalB4Tip);
-        System.out.println("Tip Percentage: " + tip);
+        System.out.println("Total Bill Before Tip: " + party.getTotalBillB4Tip());
+        System.out.println("Tip Percentage: " + party.getTipPercentage(tip));
         System.out.println("Total Tip: " + formattedTotalTip);
-        System.out.println("Total Bill With Tip: " + formattedTotalBWT);
-        System.out.println("Per Person Cost Before Tip: " + formattedIndCostB4Tip);
-        System.out.println("Tip Per Person: " + formattedIndTip);
-        System.out.println("Total Cost Per Person: " + formattedTotalCPP);
-
-
-
-
+        System.out.println("Total Bill With Tip: " + formattedTotalBillWithTip);
+        System.out.println("Per Person Cost Before Tip: " + formattedPerPersonCostB4Tip);
+        System.out.println("Tip Per Person: " + formattedTipPerPerson);
+        System.out.println("Total Cost Per Person: " + formattedTotalCostPerPerson);
 
         question.close();
     }
